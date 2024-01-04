@@ -80,21 +80,21 @@ def Roulette_wheel(pop,fitness):
     pop_size=len(pop)
     print('cumulative fitness')
     print('________________________')
-    print_fpop(f_cumulative)
+    print_fpop(f_cumulative) #cumulative fitness is used to achieve proportional selection later on
     print('________________________')
     for index2 in range(pop_size):
         rand_n=rd.uniform(0,1)
         individual_n=0
-        for fitvalue in f_cumulative:
+        for fitvalue in f_cumulative: #adds a chromosome to the parent list
             if(rand_n<=fitvalue):
                 parents.append(pop[individual_n])
                 break
             individual_n+=1
-    return parents
+    return parents #same amount as initial population
     
 
-psize=8
-ch=10
+psize=8 #population size
+ch=10 #amount of genes in each chromosome
 fgoal=[3,3]
 
 print('###########################') 
@@ -133,7 +133,7 @@ print_fpop(parents_p)
 print('________________________')
 print('These are two offspring of the first pair as an example')
 print('This is after single point cross over with random point in the chromosome')
-off=mating_crossover(parents_p[1],parents_p[2])
+off=mating_crossover(parents_p[1],parents_p[2]) #creates only one child
 print('________________________')
 print_fpop(off)
 print('________________________')
