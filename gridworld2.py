@@ -35,7 +35,7 @@ def find_fitness(bob,goal): #moves the agent, then returns 10 - the fitness func
         #
         temp2=[bob[i], bob[i+1]]
         pos=posi(temp2,pos)
-        f=32-fitness_f(pos,goal)
+        f=12-fitness_f(pos,goal)
         #
         #
         #
@@ -58,7 +58,7 @@ def mating_crossover(parent_a,parent_b): #creates a child where the first few nu
 
 def mutate(chromo):  
     for idx in range(len(chromo)):
-        if rd.random() < 0.05:  #this is quite high, usually it should be 0.1   #this means there's a 3/10 chance for the gene to mutate
+        if rd.random() < 0.1:  #this is quite high, usually it should be 0.1   #this means there's a 3/10 chance for the gene to mutate
             chromo = chromo[:idx] + [1-chromo[idx]] + chromo[idx + 1:] #if the gene does mutate, then it is flipped eg 1 becomes a zero and vice versa
     return chromo
 
@@ -86,63 +86,35 @@ def Roulette_wheel(pop,fitness):
                 parents.append(pop[individual_n])
                 break
             individual_n+=1
-
-#
-    best_fitness = [0,0]
-    best_parent = [0,0]
-    for i in range(pop_size):
-        if fitness[i] > best_fitness[0]:
-
-            best_fitness[1] = best_fitness[0]
-            best_fitness[0] = fitness[i]
-
-            best_parent[1] = best_parent[0]
-            best_parent[0] = pop[i]
-
-    if best_parent[1] == 0:
-        best_parent[1] = best_parent[0]
-
-    parents = []
-    for i in range(int(pop_size/2)):
-        parents.append(best_parent[0])
-        parents.append(best_parent[1])
-#
     return parents #same amount as initial population
     
 
 psize=8 #population size
-ch=32 #amount of genes in each chromosome
-fgoal=[-16,0]
+ch=12 #amount of genes in each chromosome
+fgoal=[3,3]
 
 
-#pop=i_pop(psize,ch)
-
-
-#generates 8 chromosomes, all of which are the same as Pi which we are given in the question
-pop = []
-for n in range(psize):
-    pop.append([1,0,0,1,0,1,1,1,0,0,1,0,1,0,0,1,0,0,1,1,0,0,0,0,0,0,0,1,1,0,1,0])
+pop=i_pop(psize,ch)
 solution_found = False
 
 
 
-# keeps running until the optimal solution is found
-while 1:
+
+for count in range(1000):
 
 
     print('population')
     print_fpop(pop)
 
-    #finds and prints the fitness of each chromosome
+
     print('population & corresponding fitness')
     fitall=[find_fitness(indi,fgoal) for indi in pop]
     pop_fit=list(zip(pop,fitall))
     print_fpop(pop_fit)
 
 
-    #checks if optimal solution has been found
-    for m in range(len(fitall)): 
-        if fitall[m] == 32:
+    for m in range(len(fitall)): #checks if optimal solution has been found
+        if fitall[m] == 12:
             print('OPTIMAL SOLUTION FOUND!')
             print(pop[m])
             print(fitall[m])
@@ -151,8 +123,8 @@ while 1:
     if solution_found == True:
         break
 
-    #selects the parents for the next generation by finding the parent with the highest fitness and duplicating it eight times
-    parents_p=Roulette_wheel(pop,fitall)
+
+    parents_p=Roulette_wheel(pop,fitall) #selects parents & prints nf & cf
 
 
     print('parents')
