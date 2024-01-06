@@ -113,7 +113,7 @@ def Roulette_wheel(pop,fitness):
 psize=8 #population size
 ch=32 #amount of genes in each chromosome
 fgoal=[-16,0]
-
+generations = 0
 
 #pop=i_pop(psize,ch)
 
@@ -146,6 +146,7 @@ while 1:
             print('OPTIMAL SOLUTION FOUND!')
             print(pop[m])
             print(fitall[m])
+            print('generations: ' + str(generations))
             solution_found = True
             break
     if solution_found == True:
@@ -160,6 +161,7 @@ while 1:
 
 
     print('offspring')
+    generations += 1
     off = []
     a = 0
     while a < 8:
@@ -173,3 +175,4 @@ while 1:
     for b in range(8):
         pop.append(mutate(off[b]))
     print_fpop(pop)
+
