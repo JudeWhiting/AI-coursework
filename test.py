@@ -1,3 +1,11 @@
-ls = [1,2,3,4,5,6]
-print(ls[:2])
-print(ls[0:])
+import numpy as np
+
+
+def a():
+    print(b())
+
+
+def b():
+    return 5
+
+a()

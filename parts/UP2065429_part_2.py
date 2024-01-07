@@ -1,34 +1,88 @@
 import numpy as np
 
-def perceptron(input_data, weights, bias):
-    # Calculate the weighted sum
-    weighted_sum = np.dot(input_data, weights) + bias
-    
-    # Apply the step function as the activation function
-    output = 1 if weighted_sum > 0 else 0
-    
-    return output
+# Define the activation function (step function for a simple perceptron)
+def activate(x):
+    return 1 if x > 0 else 0
 
-def test_perceptron_logic_gate(logic_gate):
-    # Define training data for OR and XOR problems
-    input_data_or = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
-    output_or = np.array([0, 1, 1, 1])  # OR gate truth table
-    
-    input_data_xor = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
-    output_xor = np.array([0, 1, 1, 0])  # XOR gate truth table
-    
-    # Initialize weights and bias
-    weights = np.array([1, 1])
-    bias = -0.5
-    
-    # Test the perceptron on the specified logic gate problem
-    print(f"Testing perceptron for {logic_gate} problem:")
-    for i in range(len(input_data_or)):
-        result = perceptron(input_data_or[i], weights, bias) if logic_gate == 'OR' else perceptron(input_data_xor[i], weights, bias)
-        print(f"Input: {input_data_or[i]}, Output: {result}")
-    
-# Test the perceptron for OR problem
-test_perceptron_logic_gate('OR')
+def OR():
+    # Define the OR input and corresponding output
+    X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
+    Y = np.array([0, 1, 1, 1])  # OR truth table
 
-# Test the perceptron for XOR problem
-test_perceptron_logic_gate('XOR')
+    # Define the perceptron parameters (weights and bias)
+    weights = np.random.rand(2) - 0.5  # Initialize weights randomly
+    bias = np.random.rand(1) - 0.5  # Initialize bias randomly
+
+    print('Starting Weights: ', weights)
+    print('Starting Bias: ', bias)
+
+    # Set the learning rate
+    learning_rate = 0.01
+
+    epochs = 10000
+    for epoch in range(epochs):
+        for i in range(len(X)):
+            # Forward pass (calculate the weighted sum and apply activation)
+            weighted_sum = np.dot(X[i], weights) + bias
+            output = activate(weighted_sum)
+
+            # Update weights and bias based on the error
+            error = Y[i] - output
+            weights += learning_rate * error * X[i]
+            bias += learning_rate * error
+
+    # Test the trained perceptron
+    print('Trained Weights: ', weights)
+    print('Trained Bias: ', bias)
+
+    # Predict outputs for OR inputs
+    predictions = [activate(np.dot(x, weights) + bias) for x in X]
+    print('OR inputs: ', [list(b) for b in X])
+    print('Predictions:', predictions)
+    print('Truth Table: ', list(Y))
+
+
+
+def XOR():
+    # Define the OR input and corresponding output
+    X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
+    Y = np.array([0, 1, 1, 0])  # OR truth table
+
+    # Define the perceptron parameters (weights and bias)
+    weights = np.random.rand(2) - 0.5  # Initialize weights randomly
+    bias = np.random.rand(1) - 0.5  # Initialize bias randomly
+
+    print('Starting Weights: ', weights)
+    print('Starting Bias: ', bias)
+
+    # Set the learning rate
+    learning_rate = 0.01
+
+    # Train the perceptron
+    epochs = 10000
+    for epoch in range(epochs):
+        for i in range(len(X)):
+            # Forward pass (calculate the weighted sum and apply activation)
+            weighted_sum = np.dot(X[i], weights) + bias
+            output = activate(weighted_sum)
+
+            # Update weights and bias based on the error
+            error = Y[i] - output
+            weights += learning_rate * error * X[i]
+            bias += learning_rate * error
+
+    # Test the trained perceptron
+    print('Trained Weights: ', weights)
+    print('Trained Bias: ', bias)
+
+    # Predict outputs for OR inputs
+    predictions = [activate(np.dot(x, weights) + bias) for x in X]
+    print('XOR inputs: ', [list(b) for b in X])
+    print('Predictions:', predictions)
+    print('Truth Table: ', list(Y))
+
+
+print('Input and results of a perceptron trained to solve the OR problem:')
+OR()
+print('\nInput and results of a perceptron trained to solve the XOR problem:')
+XOR()
