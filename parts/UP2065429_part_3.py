@@ -1,71 +1,29 @@
 import numpy as np
 
-# Generate synthetic data for training
-def generate_data(num_samples=1000):
-    X = np.random.rand(num_samples, 2)
-    y = np.prod(X, axis=1)
-    return X, y
+def neuron(inputs, weights, bias):
+    return 1.0/(1+np.exp(-(np.dot(inputs, weights) + bias)))
 
-# Sigmoid activation function
-def sigmoid(x):
-    return 1 / (1 + np.exp(-x))
+X = 2
+HL = [8]
+Y = 1
+L = [X] + HL + [Y]
 
-# Derivative of the sigmoid function
-def sigmoid_derivative(x):
-    return x * (1 - x)
+weights = np.random.rand(HL[0] , X) - 0.5
+biases = np.random.rand(HL[0]) - 0.5
 
-# Mean Squared Error loss function
-def mean_squared_error(y_true, y_pred):
-    return np.mean((y_true - y_pred)**2)
+def train_neuron(inputs, target_outputs, W, B, epochs=100, learning_rate = 0.1):
+    for epoch in range(epochs):
+        for i in range(len(inputs)):
+            error = target_outputs[i] - neuron(inputs[i], W, B)
+            W += learning_rate * error * inputs[i]
+            B += learning_rate * error
+    return W, B
 
-# Neural network model with one hidden layer
-class NeuralNetwork:
-    def __init__(self, input_size, hidden_size, output_size):
-        self.weights_input_hidden = np.random.rand(input_size, hidden_size)
-        self.weights_hidden_output = np.random.rand(hidden_size, output_size)
-        self.hidden_activation = sigmoid
 
-    def forward(self, X):
-        self.hidden_input = np.dot(X, self.weights_input_hidden)
-        self.hidden_output = self.hidden_activation(self.hidden_input)
-        self.output = np.dot(self.hidden_output, self.weights_hidden_output)
-        return self.output
 
-    def backward(self, X, y, learning_rate):
-        output_error = y - self.output
-        output_delta = output_error
-
-        hidden_error = output_delta.dot(self.weights_hidden_output.T)
-        hidden_delta = hidden_error * sigmoid_derivative(self.hidden_output)
-
-        self.weights_hidden_output += self.hidden_output.T.dot(output_delta) * learning_rate
-        self.weights_input_hidden += X.T.dot(hidden_delta) * learning_rate
-
-# Generate training data
-X_train, y_train = generate_data()
-
-# Create and train the neural network
-input_size = 2
-hidden_size = 5
-output_size = 1
-learning_rate = 0.1
-epochs = 1000
-
-model = NeuralNetwork(input_size, hidden_size, output_size)
-
-for epoch in range(epochs):
-    # Forward pass
-    predictions = model.forward(X_train)
-
-    # Backward pass
-    model.backward(X_train, y_train, learning_rate)
-
-    # Calculate and print the training loss
-    loss = mean_squared_error(y_train, predictions)
-    if epoch % 100 == 0:
-        print(f"Epoch {epoch}, Loss: {loss}")
-
-# Test the model with new data
-test_input = np.array([[0.8, 0.4]])
-predicted_output = model.forward(test_input)
-print(f"Predicted product of {test_input[0, 0]} and {test_input[0, 1]}: {predicted_output[0]}")
+weights = weights[0]
+biases = biases[0]
+data = np.array([[0,0],[0,1],[1,0],[1,1]]) #training data
+OR_truth_table = np.array([0,1,1,1]) #truth table for OR
+weights, biases = train_neuron(data, OR_truth_table, weights, biases)
+print(neuron(data, weights, biases))
