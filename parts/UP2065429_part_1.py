@@ -110,7 +110,7 @@ def Roulette_wheel(pop,fitness):
     return parents #same amount as initial population
     
 
-psize=8 #population size
+psize=128 #population size
 ch=32 #amount of genes in each chromosome
 fgoal=[-16,0]
 generations = 0
@@ -164,7 +164,7 @@ while 1:
     generations += 1
     off = []
     a = 0
-    while a < 8:
+    while a < psize:
         off += mating_crossover(parents_p[a],parents_p[a+1]) #creates 2 children
         a += 2
     print_fpop(off)
@@ -172,7 +172,7 @@ while 1:
 
     print('apply mutation to the offspring')
     pop = []
-    for b in range(8):
+    for b in range(psize):
         pop.append(mutate(off[b]))
     print_fpop(pop)
 
