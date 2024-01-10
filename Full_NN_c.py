@@ -132,11 +132,11 @@ if __name__ == "__main__":   #Test what we have done
     targets = np.array([[i[0] * i[1]] for i in training_inputs])     #this creates a training set of outputs
         
     nn=Full_NN(2, [5,5], 1)   #creates a NN with 2 inputs, 2 hidden layers and 1 ouput
-
+    print(nn.W)
     nn.train_nn(training_inputs, targets, 10, 0.1)  #trains the network with 0.1 learning rate for 10 epochs
-
+    print(nn.W)
     #Testing data to identify if Network trained well.
-    input = np.array([0.3, 0.2])      #after training this tests the train network 
+    input = np.array([0.2, 0.2])      #after training this tests the train network 
     target = np.array([0.06])         # for this target value.  
 
     NN_output = nn.FF(input)
