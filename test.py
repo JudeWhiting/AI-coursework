@@ -18,8 +18,8 @@ training_data = np.array([[np.random.rand() for _ in range(2)] for _ in range(10
 target_outputs = np.array([[i[0] + i[1]] for i in training_data])
 
 # Training the neural network
-learning_rate = 0.1
-epochs = 100
+learning_rate = 0.05
+epochs = 1000
 
 for i in range(epochs):
     # Forward pass
