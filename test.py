@@ -43,7 +43,7 @@ for i in range(epochs):
         # Backpropagation
         output_error = error * sigmoid_der(predicted_outputs)
 
-        hidden_layer_error = np.dot(output_error, Y_weights.T) * sigmoid_der(HL_output)
+        hidden_layer_error = output_error.dot(Y_weights.T) * sigmoid_der(HL_output)
 
         # Update weights and biases
         Y_weights += np.dot(HL_output.T, output_error) * learning_rate
@@ -53,7 +53,7 @@ for i in range(epochs):
         HL_biases += np.sum(hidden_layer_error) * learning_rate
 
 # Test the trained neural network
-for k in [[0.1, 0.1], [0.3, 0.2], [0.4, 0.35], [0.3, 0.3]]: #test data goes here
+for k in [[0.1, 0.3], [0.3, 0.2], [0.4, 0.35], [0.3, 0.3]]: # New input data
     new_data_point = np.array(k)  # New input data
     HL_input = np.dot(new_data_point, HL_weights) + HL_biases
     HL_output = sigmoid(HL_input)

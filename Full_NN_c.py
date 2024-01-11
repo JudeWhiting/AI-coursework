@@ -52,7 +52,6 @@ class Full_NN(object):
             Xnext=np.dot(out, w)    #calculate product between weights and output for the next output
             out=self.sigmoid(Xnext)  #use the activation function as we must per theory. 
             self.out[i+1]=out      #pass the result to the clas variable to preserve for later (when we do the back propagation. 
-
         return out #return the outputs of the layers. 
 
 

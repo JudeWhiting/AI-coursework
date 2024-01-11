@@ -18,6 +18,7 @@ biases_hidden = np.zeros((1, hidden_layer_size))
 weights_hidden_output = np.random.rand(hidden_layer_size, output_size)
 biases_output = np.zeros((1, output_size))
 
+
 X = np.array([[np.random.rand()/2 for _ in range(2)] for _ in range(100)])  #this creates a training set of inputs
 y = np.array([[i[0] + i[1]] for i in X])  
 
@@ -25,7 +26,7 @@ y = np.array([[i[0] + i[1]] for i in X])
 learning_rate = 0.05
 epochs = 100000
 
-for i in range(epochs):
+for epoch in range(epochs):
     # Forward pass
     hidden_layer_input = np.dot(X, weights_input_hidden) + biases_hidden
     hidden_layer_output = sigmoid(hidden_layer_input)
@@ -48,7 +49,7 @@ for i in range(epochs):
     biases_hidden += np.sum(hidden_layer_error) * learning_rate
 
 # Test the trained neural network
-new_data_point = np.array([0.1, 0.3])  # New input data
+new_data_point = np.array([0.3, 0.3])  # New input data
 hidden_layer_input = np.dot(new_data_point, weights_input_hidden) + biases_hidden
 hidden_layer_output = sigmoid(hidden_layer_input)
 
