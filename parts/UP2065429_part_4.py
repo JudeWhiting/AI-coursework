@@ -1,60 +1,74 @@
 import numpy as np
 
-def sigmoid(x):
-    return 1 / (1 + np.exp(-x))
+def relu(x):
+    return np.maximum(0, x)
 
-def sigmoid_derivative(x):
-    return x * (1 - x)
+def relu_der(x):
+    return np.where(x > 0, 1, 0)
 
 # Define the neural network architecture
-input_size = 2  # Number of input features
-hidden_layer_size = 2  # Number of neurons in the hidden layer
-output_size = 1  # Number of output neurons
+X = 2  # Number of input features
+HL1 = 4  # Number of neurons in the first hidden layer
+HL2 = 4  # Number of neurons in the second hidden layer
+Y = 1  # Number of output neurons
 
-# Initialize weights and biases
-weights_input_hidden = np.random.rand(input_size, hidden_layer_size)
-biases_hidden = np.zeros((1, hidden_layer_size))
+# Initialize weights for the vertices attached to the hidden layers and the output layer
+HL1_weights = np.random.rand(X, HL1)
+HL2_weights = np.random.rand(HL1, HL2)
+Y_weights = np.random.rand(HL2, Y)
+HL1_biases = np.zeros((1, HL1))
+HL2_biases = np.zeros((1, HL2))
+Y_biases = np.zeros((1, Y))
 
-weights_hidden_output = np.random.rand(hidden_layer_size, output_size)
-biases_output = np.zeros((1, output_size))
-
-
-X = np.array([[np.random.rand()/2 for _ in range(2)] for _ in range(100)])  #this creates a training set of inputs
-y = np.array([[i[0] + i[1]] for i in X])  
+training_data = np.array([[np.random.rand() for _ in range(2)] for _ in range(1000)])  
+target_outputs = np.array([[i[0] + i[1]] for i in training_data])
 
 # Training the neural network
-learning_rate = 0.05
-epochs = 100000
+learning_rate = 0.01
+epochs = 1000
 
-for epoch in range(epochs):
+for i in range(epochs):
     # Forward pass
-    hidden_layer_input = np.dot(X, weights_input_hidden) + biases_hidden
-    hidden_layer_output = sigmoid(hidden_layer_input)
+    for j, inputs in enumerate(training_data):
+        inputs = inputs.reshape((1, 2))
+        HL1_input = np.dot(inputs, HL1_weights) + HL1_biases
+        HL1_output = relu(HL1_input)
 
-    output_layer_input = np.dot(hidden_layer_output, weights_hidden_output) + biases_output
-    predicted_output = sigmoid(output_layer_input)
+        HL2_input = np.dot(HL1_output, HL2_weights) + HL2_biases
+        HL2_output = relu(HL2_input)
 
-    # Calculate the error
-    error = y - predicted_output
+        Y_input = np.dot(HL2_output, Y_weights) + Y_biases
+        predicted_outputs = Y_input 
+        
+        # Calculate the error
+        error = target_outputs[j] - predicted_outputs
 
-    # Backpropagation
-    output_error = error * sigmoid_derivative(predicted_output)
-    hidden_layer_error = output_error.dot(weights_hidden_output.T) * sigmoid_derivative(hidden_layer_output)
+        # Backpropagation
+        output_error = error
+        hidden_layer2_error = np.dot(output_error, Y_weights.T) * relu_der(HL2_output)
+        hidden_layer1_error = np.dot(hidden_layer2_error, HL2_weights.T) * relu_der(HL1_output)
 
-    # Update weights and biases
-    weights_hidden_output += hidden_layer_output.T.dot(output_error) * learning_rate
-    biases_output += np.sum(output_error) * learning_rate
+        # Update weights and biases
+        Y_weights += np.dot(HL2_output.T, output_error) * learning_rate
+        Y_biases += np.sum(output_error) * learning_rate
 
-    weights_input_hidden += X.T.dot(hidden_layer_error) * learning_rate
-    biases_hidden += np.sum(hidden_layer_error) * learning_rate
+        HL2_weights += np.dot(HL1_output.T, hidden_layer2_error) * learning_rate
+        HL2_biases += np.sum(hidden_layer2_error) * learning_rate
+
+        HL1_weights += np.dot(inputs.T, hidden_layer1_error) * learning_rate
+        HL1_biases += np.sum(hidden_layer1_error) * learning_rate
 
 # Test the trained neural network
-new_data_point = np.array([0.3, 0.3])  # New input data
-hidden_layer_input = np.dot(new_data_point, weights_input_hidden) + biases_hidden
-hidden_layer_output = sigmoid(hidden_layer_input)
+for k in [[0.1, 0.1], [0.3, 0.2], [0.4, 0.35], [0.3, 0.3], [0.8, 0.6], [0.5, 0.5]]:
+    new_data_point = np.array(k)
+    HL1_input = np.dot(new_data_point, HL1_weights) + HL1_biases
+    HL1_output = relu(HL1_input)
 
-output_layer_input = np.dot(hidden_layer_output, weights_hidden_output) + biases_output
-predicted_output = sigmoid(output_layer_input)
+    HL2_input = np.dot(HL1_output, HL2_weights) + HL2_biases
+    HL2_output = relu(HL2_input)
 
-print("Input:", new_data_point)
-print("Predicted Output:", predicted_output)
+    Y_input = np.dot(HL2_output, Y_weights) + Y_biases
+    predicted_outputs = Y_input  # No activation on the output node
+
+    print("Input:", new_data_point)
+    print("Predicted Output:", predicted_outputs)
