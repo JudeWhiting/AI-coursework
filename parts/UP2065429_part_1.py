@@ -107,6 +107,17 @@ def Roulette_wheel(pop,fitness):
         parents.append(best_parent[0])
         parents.append(best_parent[1])
 #
+        
+#
+    parents = []
+    
+    for _ in range(len(pop)):
+        random_tourney = [np.random.randint(0, pop_size) for _ in range(16)]
+        winner = max(fitness[random_tourney])
+        parents.append(winner)
+
+
+
     return parents #same amount as initial population
     
 
