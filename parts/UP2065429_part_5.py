@@ -1,5 +1,7 @@
 #code doesn't work, but I have tried my best to implement as much of it as possible.
 
+#image loading works fully, please unzip the cifar10.zip file and make sure it's in the right directory
+#note: i had to zip the sample dataset as it wouldn't let me upload it otherwise
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -82,7 +84,7 @@ test_images = []
 test_truth_table = []
 #successfully loads the images of airplanes and dogs
 for i in range(1, 101):
-    with open(f'parts/cifar10/train/airplane/{i:04d}.png', 'rb') as f:
+    with open(f'cifar10/train/airplane/{i:04d}.png', 'rb') as f:
         #converts the image to a numpy array, and stores it in a list
         image = plt.imread(f)
         images.append(image)
@@ -90,7 +92,7 @@ for i in range(1, 101):
         label = np.array([1, 0])
         truth_table.append(label)
 
-    with open(f'parts/cifar10/train/dog/{i:04d}.png', 'rb') as f:
+    with open(f'/cifar10/train/dog/{i:04d}.png', 'rb') as f:
         image = plt.imread(f)
         images.append(image)
         #adds the truth table values corresponding to 'dog' to a list
@@ -98,7 +100,7 @@ for i in range(1, 101):
         truth_table.append(label)
 
 for i in range(1, 11):
-    with open(f'parts/cifar10/test/airplane/{i:04d}.png', 'rb') as f:
+    with open(f'cifar10/test/airplane/{i:04d}.png', 'rb') as f:
         #converts the image to a numpy array, and stores it in a list
         image = plt.imread(f)
         test_images.append(image)
@@ -106,7 +108,7 @@ for i in range(1, 11):
         label = np.array([1, 0])
         test_truth_table.append(label)
 
-    with open(f'parts/cifar10/test/dog/{i:04d}.png', 'rb') as f:
+    with open(f'cifar10/test/dog/{i:04d}.png', 'rb') as f:
         image = plt.imread(f)
         test_images.append(image)
         #adds the truth table values corresponding to 'dog' to a list
