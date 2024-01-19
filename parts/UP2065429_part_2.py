@@ -7,21 +7,20 @@ def sigmoid(x): #sigmoid activation function
 
 def perceptron(X,Y):
 
-    weights = np.random.rand(2) - 0.5  #initialize random weights, between -0.5 and 0.5
-    bias = np.random.rand(1) - 0.5  #initialize a random bias, between -0.5 and 0.5
-    learning_rate = 0.1
+    weights = np.random.rand(2) #initializes 2 random weights between zero and 1
+    bias = np.zeros(1) #initializes the bias as zero
+    learning_rate = 0.05
 
     print('starting weights: ',weights) #print starting weights and bias
     print('starting bias: ',bias)
     
-    for count in range(1000): #adjusts the perceptrons weights and values 1000 times
+    for count in range(10000): #adjusts the perceptrons weights and values 10000 times
 
         for i in range(len(X)):
 
             output = sigmoid(np.dot(X[i], weights) + bias) #calculates weighted sum and applies the sigmoid function
 
-            #update weights and the bias based on the error
-            error = Y[i] - output
+            error = Y[i] - output #update weights and the bias based on the error
             weights += learning_rate * error * X[i]
             bias += learning_rate * error
 
@@ -41,3 +40,4 @@ print('Input and results of a perceptron trained to solve the OR problem:')
 perceptron(data,OR_truth_table)
 print('\nInput and results of a perceptron trained to solve the XOR problem:')
 perceptron(data,XOR_truth_table)
+print('\n based on the predicted outputs of each perceptron, we can see that the perceptron trained to solve the OR problem is very confident with which output node should be activated, whereas the perceptron trained to solve the XOR problem has no idea. This is because the XOR problem is not linearly separable, whereas the OR problem is.')
