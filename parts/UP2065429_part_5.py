@@ -1,8 +1,3 @@
-#code doesn't work, but I have tried my best to implement as much of it as possible.
-
-#image loading works fully, please unzip the cifar10.zip file and make sure it's in the right directory
-#note: i had to zip the sample dataset as it wouldn't let me upload it otherwise
-
 import numpy as np
 import matplotlib.pyplot as plt
 
